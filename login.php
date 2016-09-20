@@ -1,8 +1,4 @@
- Mõtlesin teha broneeringulehe telkimis- ja haagissuvilate platside jaoks. Idee seisneb siis selles, et mul on kujuteldav krunt maad, 
- mille olen jaganud telkimis- ja haagissuvilate platsideks. Veebilehel peaks ideaalis saama broneerida platse millel on erinevad omadused 
- erinevate hindadega (vaiksem koht, lastega pered, ...), juurde käivad teenused nagu elekter jne.
- Osadele platsidele tekivad järjekorrad, osad saadavad koguaeg, ehk siis ka ootejärjekorrad jm.
- 
+
  
  <?php
 	
