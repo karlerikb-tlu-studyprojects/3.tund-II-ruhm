@@ -3,6 +3,15 @@
 	require("../../config.php");
 	require("functions.php");
 	
+	//kui on juba sisse loginud siis suunan data lehele
+	if (isset($_SESSION["userId"])) {
+		
+		//suunan sisselogimise lehele
+		header("Location: data.php");
+		
+	}
+	
+	
 	//echo hash("sha512", "a");
 	
 	//GET ja POSTi muutujad
@@ -128,6 +137,15 @@
 
 		}
 	
+	$error = "";
+	if (isset($_POST["loginEmail"]) && isset($_POST["loginPassword"]) &&
+		!empty($_POST["loginEmail"]) && !empty($_POST["loginPassword"])
+	) {
+	
+		$error = login($_POST["loginEmail"], $_POST["loginPassword"]);
+	
+		}
+	
 	
  
  ?>
@@ -145,6 +163,7 @@
 
 	<h1>Logi sisse</h1>
 	<form method="POST">
+			<p style="color:red;"><?=$error;?></p>
 			<label>E-post</label><br>
 			<input name="loginEmail" type="text">
 			<br><br>

@@ -1,7 +1,9 @@
 <?php
-	// functions.php
+	//functions.php
+	//var_dump($GLOBALS);
 	
-	var_dump($GLOBALS);
+	// see fail peab olema kõigil lehtedel kus tahan kasutada SESSION muutujat
+	session_start();
 	
 	//*****************
 	//**** SIGNUP *****
@@ -19,7 +21,7 @@
 			$stmt->bind_param("ss", $email, $password);
 			
 			if($stmt->execute()) {
-				echo "salvestamine �nnestus";
+				echo "salvestamine õnnestus";
 			
 			} else {
 				echo "ERROR ".$stmt->error;
@@ -30,6 +32,55 @@
 
 		}
 	
+	
+	function login ($email, $password) {
+		
+		$error = "";
+		
+		$database = "if16_karlerik";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+			
+		$stmt = $mysqli->prepare("SELECT id, email, password, created FROM user_sample WHERE email = ?");
+			
+		echo $mysqli->error;
+		
+		//asendan küsimärgi
+		$stmt->bind_param("s", $email);
+		
+		//määran väärtused muutujatesse (võib panna ka $a, $b, $c, $d muutujateks, järekord on oluline)
+		$stmt->bind_result($id, $emailFromDb, $passwordFromDb, $created);
+		$stmt->execute();
+		
+		//andmed tulid andmebaasist või mitte
+		//on tõene kui on vähemalt üks vaste
+		if($stmt->fetch()){
+			
+			//oli sellise meiliga kasutaja
+			//password millega kasutaja tahab sisse logida
+			$hash = hash("sha512", $password);
+			if ($hash == $passwordFromDb) {
+				echo "Kasutaja logis sisse ".$id;
+				
+				//määran sessiooni muutujad, millele saan ligi teistelt lehtedelt
+				$_SESSION["userId"] = $id;
+				$_SESSION["userEmail"] = $emailFromDb;
+				
+				header("Location: data.php");
+				
+				
+			} else {
+				$error = "vale parool";
+			}
+			
+		} else {
+			
+			//ei leidnud kasutajat selle meiliga
+			$error = "ei ole sellist emaili";
+		}
+		
+		return $error;
+		
+	}
 
 	
 	
