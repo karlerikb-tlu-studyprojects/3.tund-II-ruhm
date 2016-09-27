@@ -1,6 +1,7 @@
  <?php
 	
 	require("../../config.php");
+	require("functions.php");
 	
 	//echo hash("sha512", "a");
 	
@@ -123,32 +124,7 @@
 			//echo $serverUsername;
 			
 			//ühendus
-			$database = "if16_karlerik";
-			$mysqli = new mysqli($serverHost, $serverUsername, $serverPassword, $database);
-			
-			//sqli rida
-			$stmt = $mysqli->prepare("INSERT INTO user_sample (email, password) VALUES (?, ?)");
-			
-			echo $mysqli->error;
-			
-			//stringina üks täht iga muutuja kohta (?), mis tüüp
-			//string - s
-			//integer - i
-			//float (double) - d
-			//küsimärgid asendada muutujaga
-			$stmt->bind_param("ss", $signupEmail, $password);
-			
-			//täida käsku
-			if($stmt->execute()) {
-				echo "salvestamine õnnestus";
-			
-			} else {
-				echo "ERROR ".$stmt->error;
-			}
-			
-			//panen ühenduse kinni
-			$stmt->close();
-			$mysqli->close();
+			signUp($signupEmail, $password);
 
 		}
 	
